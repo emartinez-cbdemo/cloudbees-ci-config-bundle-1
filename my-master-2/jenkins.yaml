@@ -1,1 +1,80 @@
+notificationConfiguration:
+  enabled: true
+  router: "operationsCenter"
+jenkins:
+  authorizationStrategy: "cloudBeesRoleBasedAccessControl"
+  quietPeriod: 0
+  systemMessage: 'Jenkins configured using CloudBees CI CasC'
+unclassified:
+  hibernationConfiguration:
+    activities:
+    - "build"
+    - "web"
+    enabled: true
+    gracePeriod: 1500
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookSecretConfigs:
+    - credentialsId: "cloudbees-ci-workshop-github-webhook-secret"
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED
+  globallibraries:
+    libraries:
+    - defaultVersion: "module-2"
+      name: "pipeline-library"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              credentialsId: "cloudbees-ci-pipeline-workshop-github-app"
+              repoOwner: "emartinez-20210728"
+              repository: "pipeline-library"
+kube:
+  podTemplatesConfiguration:
+    templates:
+    - containers:
+      - args: "cat"
+        command: "/bin/sh -c"
+        image: "node:8.12.0-alpine"
+        livenessProbe:
+          failureThreshold: 0
+          initialDelaySeconds: 0
+          periodSeconds: 0
+          successThreshold: 0
+          timeoutSeconds: 0
+        name: "nodejs"
+        ttyEnabled: true
+        workingDir: "/home/jenkins/agent"
+      hostNetwork: false
+      idleMinutes: 30
+      idleMinutesStr: "30"
+      label: "nodejs-app"
+      name: "nodejs-app"
+      podRetention: "always"
+      yamlMergeStrategy: "override"
+groovy:
+  - url: https://raw.githubusercontent.com/emartinez-20210728/cloudbees-ci-config-bundle/master/groovy/cbci-pipeline-workshop-create-jobs.groovy
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "Webhook secret for CloudBees CI Workshop GitHub App"
+          id: "cloudbees-ci-workshop-github-webhook-secret"
+          scope: SYSTEM
+          secret: "${gitHubWebhookSecret}"
+      - gitHubApp:
+          apiUri: "https://api.github.com"
+          appID: "103013"
+          description: "CloudBees CI Pipeline Workshop GitHub App credential"
+          id: "cloudbees-ci-pipeline-workshop-github-app"
+          owner: "emartinez-20210728"
+          privateKey: "${cbciPipelineWorkshopGitHubAppPrivateKey}"
+      - usernamePassword:
+          description: "Example Service Username/Password Credential"
+          id: "example-service-username-password"
+          password: "${cbciWorkshopExampleCredentialServicePassword}"
+          scope: GLOBAL
+          username: "service_user"
 
