@@ -4,7 +4,7 @@ notificationConfiguration:
 jenkins:
   authorizationStrategy: "cloudBeesRoleBasedAccessControl"
   quietPeriod: 0
-  systemMessage: 'Jenkins configured using CloudBees CI CasC'
+  systemMessage: 'Jenkins configured using CloudBees CI CasC alternate bundle'
 unclassified:
   hibernationConfiguration:
     activities:
